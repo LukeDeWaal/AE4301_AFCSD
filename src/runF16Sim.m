@@ -19,7 +19,7 @@ surface2 = 'ail_';
 surface3 = 'rud_';
 
 
-newline = sprintf('\n');
+
 
 disp('This is an F-16 Simulation.');
 disp('The simulation will begin by asking you for the flight ');
@@ -67,7 +67,7 @@ elseif fi_flag == 2;
   fi_flag_Simulink = 1;
 else
   disp('Invalid selection');
-  break;
+  %break;
 end
 
 %% Trim aircraft to desired altitude and velocity
@@ -105,7 +105,7 @@ elseif dis_flag == 'n'
   surfacedef = 'none';  %do nothing
 else
   disp('Invalid Selection');
-  break;
+  %break;
 end
 disp(newline);
 disp(newline);
@@ -157,7 +157,7 @@ fclose(fid_trim);
 plot_flag = input('Plot results (y/n):  ', 's');
 
 if plot_flag == 'n'
-  break;
+  %break;
 else
   graphF16;
 end
