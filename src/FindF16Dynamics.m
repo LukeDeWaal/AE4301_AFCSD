@@ -15,20 +15,20 @@ addpath obsmutoolsfornewermatlabversions -END % required for some new MATLAB ver
 
 global fi_flag_Simulink
 
-newline = sprintf('\n');
+%newline = sprintf('\n');
 
 %% Trim aircraft to desired altitude and velocity
 %%
-altitude = input('Enter the altitude for the simulation (ft)  :  ');
-velocity = input('Enter the velocity for the simulation (ft/s):  ');
+altitude = 10000.0;
+velocity = 600.0;
 
 %% Initial guess for trim
 %%
 thrust = 5000;          % thrust, lbs
 elevator = -0.09;       % elevator, degrees
-alpha = 8.49;              % AOA, degrees
-rudder = -0.01;             % rudder angle, degrees
-aileron = 0.01;            % aileron, degrees
+alpha = 8.49;           % AOA, degrees
+rudder = -0.01;         % rudder angle, degrees
+aileron = 0.01;         % aileron, degrees
 
 %% Find trim for Hifi model at desired altitude and velocity
 %%
@@ -42,7 +42,7 @@ trim_state_lin = trim_state_hi; trim_thrust_lin = trim_thrust_hi; trim_control_l
 [A_hi,B_hi,C_hi,D_hi] = linmod('LIN_F16Block', [trim_state_lin; trim_thrust_lin; trim_control_lin(1); trim_control_lin(2); trim_control_lin(3); ...
 		dLEF; -trim_state_lin(8)*180/pi], [trim_thrust_lin; trim_control_lin(1); trim_control_lin(2); trim_control_lin(3)]);
 
-%% Find trim for Hifi model at desired altitude and velocity
+%% Find trim for Lofi model at desired altitude and velocity
 %%
 disp('Trimming Low Fidelity Model:');
 fi_flag_Simulink = 0;
