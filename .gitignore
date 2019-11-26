@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Shitty Files
+obsmutoolsfornewermatlabversions/
+slprj/
+
 # C extensions
 *.so
 
