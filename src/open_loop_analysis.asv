@@ -9,8 +9,6 @@ B_long = matrices.B_ac_long;
 C_long = matrices.C_ac_long; 
 D_long = matrices.D_ac_long;
 
-B_long  = [0,0;0.00156899429893435,0.184926492708690;-9.39502701533617e-08,-0.00189996119559329;0,-0.192753630036518];
-
 A_lat = matrices.A_ac_lat; 
 B_lat = matrices.B_ac_lat;
 C_lat = matrices.C_ac_lat; 
@@ -19,5 +17,64 @@ D_lat = matrices.D_ac_lat;
 sys_long = ss(A_long, B_long, C_long, D_long);
 sys_lat = ss(A_lat, B_lat, C_lat, D_lat);
 
-%%
-impulse(sys_long, 3);
+%% Periodic Motions
+%% Short Period
+t_short = 0:0.001:3;
+u_short = [ zeros(1,numel(t_short)) ; 
+            1 zeros(1,numel(t_short)-1)];
+
+[y_short, x_short] = lsim(A_long, B_long, C_long, D_long, u_short, t_short);
+
+
+%% Phugoid
+t_phugoid = 0:0.001:25;
+u_phugoid = [ zeros(1,numel(t_phugoid)) ; 
+              1 zeros(1,numel(t_phugoid)-1)];
+
+[y_phugoid, x_phugoid] = lsim(A_long, B_long, C_long, D_long, u_phugoid, t_phugoid);
+
+
+%% Dutch Roll
+
+t_dutch = 0:0.001:25;
+u_dutch = [ zeros(1,numel(t_dutch)) ; 
+            zeros(1,numel(t_dutch)) ; 
+            1 zeros(1,numel(t_dutch)-1)];
+
+[y_dutch, x_dutch] = lsim(A_lat, B_lat, C_lat, D_lat, u_dutch, t_dutch);
+
+
+%% Aperiodic Motions
+%% Aperiodic Roll
+
+t_aroll = 0:0.001:25;
+u_aroll = [ zeros(1,numel(t_aroll)) ; 
+            1 zeros(1,numel(t_aroll)-1) ; 
+            zeros(1,numel(t_aroll))];
+
+[y_aroll, x_aroll] = lsim(A_lat, B_lat, C_lat, D_lat, u_aroll, t_aroll);
+
+%% Spiral
+
+t_spiral = 0:0.001:25;
+u_spiral = [ zeros(1,numel(t_spiral)) ; 
+            1 zeros(1,numel(t_spiral)-1) ; 
+            zeros(1,numel(t_spiral))];
+
+[y_spiral, x_spiral] = lsim(A_lat, B_lat, C_lat, D_lat, u_spiral, t_spiral);
+
+
+%% Plots
+
+% Short Period
+long_vars = ["Pitch Angle - \theta [\degree]", "Velocity - V_t [\frac{m}{s}]" ,"Angle of Attack - \alpha [\degree]", "Pitch Rate - q [\frac{\degree}{s}]"]; 
+
+subplot(2, 2, 1);
+plot(x_short(:, 1), y_short(:, 1));
+title("Pitch Angle - \theta");
+
+
+
+
+function plttr = plotter()
+    
