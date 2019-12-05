@@ -19,8 +19,8 @@ global fi_flag_Simulink
 
 %% Trim aircraft to desired altitude and velocity
 %%
-altitude = 10000.0;
-velocity = 600.0;
+altitude = 15000.0;
+velocity = 500.0;
 
 %% Initial guess for trim
 %%
