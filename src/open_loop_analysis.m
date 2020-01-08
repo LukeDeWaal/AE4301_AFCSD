@@ -65,8 +65,8 @@ x0_lat = [0.0; 0.0; 0.0; 0.0];
 long_vars = ["Pitch Angle - \theta [ \circ ]", "Velocity - V_t [m/s]" ,"Angle of Attack - \alpha [ \circ ]", "Pitch Rate - q [ \circ/s]"]; 
 lat_vars = ["Roll Angle - \phi [ \circ ]", "Side-Slip Angle - \beta [ \circ ]", "Roll Rate - p [\circ/s]", "Yaw Rate - r [\circ/s]"];
 
-opt = stepDataOptions;
-opt.StepAmplitude = -1;
+% opt = stepDataOptions;
+% opt.StepAmplitude = -1;
 
 
 %% Periodic Motions
@@ -77,7 +77,7 @@ y_short = transpose(x0_long) + impulse(sys_long(:,2),  t_short, opt)*-1;
 
 %% Phugoid
 
-t_phugoid = 0:dt:1500;
+t_phugoid = 0:dt:1000;
 y_phugoid = transpose(x0_long) + impulse(sys_long(:,2),  t_phugoid, opt)*-1;
 
 %% Dutch Roll
@@ -93,24 +93,24 @@ y_aroll = impulse(sys_lat(:,2), t_aroll, opt)*-1;
 
 %% Spiral
 
-t_spiral = 0:dt:1000;
-y_spiral = impulse(sys_lat(:, [2 3]), t_spiral, opt);
+t_spiral = 0:dt:120;
+y_spiral = impulse(sys_lat(:, [2 3]), t_spiral, opt)*-1;
 
 %% Plots
 %  Short Period - Phugoid - Dutch Roll - Aperiodic Roll - Spiral
-to_plot = [ 1 0 0 0 0 ];
+to_plot = [ 0 1 0 0 0 ];
 
 
 
 if to_plot(1)
     figure
     for i = 1:4
-        set(gca,'FontSize',14);
+        set(gca,'FontSize',15);
         subplot(2, 2, i);
         plot(t_short, y_short(:, i), 'b-'); hold on;
         plot(Th_sp, intersection_point(Th_sp, t_short, y_short(:,i)), 'ro'); hold on;
         plot(P_sp,  intersection_point(P_sp, t_short, y_short(:,i)), 'ko'); hold off;
-        set(gca,'FontSize',14);
+        set(gca,'FontSize',15);
         legend('Response', 'Half-Amplitude Period', 'Period');
         grid on
         title(long_vars(i));
@@ -118,43 +118,49 @@ if to_plot(1)
         ylabel(long_vars(i));
         
     end
-    sgtitle("Short Period");
+    sgtitle("Short Period", "FontSize", 20);
 end
 
 if to_plot(2)
     figure
     for i = 1:4
+        set(gca,'FontSize',15);
         subplot(2, 2, i);
         plot(t_phugoid, y_phugoid(:, i), 'b-'); hold on;
         plot(Th_ph, intersection_point(Th_ph, t_phugoid, y_phugoid(:,i)), 'ro'); hold on;
         plot(P_ph,  intersection_point(P_ph, t_phugoid, y_phugoid(:,i)), 'ko'); hold off;
+        set(gca,'FontSize',15);
         legend('Response', 'Half-Amplitude Period', 'Period');
         grid on
         title(long_vars(i));
         xlabel("Time [s]")
         ylabel(long_vars(i));
     end
-    sgtitle("Phugoid");
+    sgtitle("Phugoid", "FontSize", 20);
 end
 
 if to_plot(3)
     figure
     for i = 1:4
+        set(gca,'FontSize',15);
         subplot(2, 2, i);
         plot(t_dutch, y_dutch(:, i), 'b-'); hold on;
         plot(Th_dr, intersection_point(Th_dr, t_dutch, y_dutch(:,i)), 'ro'); hold on;
         plot(P_dr,  intersection_point(P_dr, t_dutch, y_dutch(:,i)), 'ko'); hold off;
+        set(gca,'FontSize',15);
         legend('Response', 'Half-Amplitude Period', 'Period');
         grid on
         title(lat_vars(i));
         xlabel("Time [s]")
         ylabel(lat_vars(i));
     end
-    sgtitle("Dutch Roll");
+    sgtitle("Dutch Roll", "FontSize", 20);
     
     figure 
+    set(gca,'FontSize',15);
     plot(y_dutch(:,4), y_dutch(:,3));
     grid on
+    set(gca,'FontSize',15);
     title("Dutch Roll - Roll Rates");
     xlabel("Roll Rate - \circ/s")
     ylabel("Yaw Rate - \circ/s");
@@ -165,33 +171,38 @@ end
 if to_plot(4)
     figure
     for i = 1:4
+        set(gca,'FontSize',15);
         subplot(2, 2, i);
         plot(t_aroll, y_aroll(:, i), 'b-'); hold on;
         plot(Th_ar, intersection_point(Th_ar, t_aroll, y_aroll(:,i)), 'ro'); hold on;
         plot(tau_ar,  intersection_point(tau_ar, t_aroll, y_aroll(:,i)), 'go'); hold off;
+        set(gca,'FontSize',15);
         legend('Response', 'Half-Amplitude Period', 'Time Constant');
         grid on
         title(lat_vars(i));
         xlabel("Time [s]")
         ylabel(lat_vars(i));
     end
-    sgtitle("Aperiodic Roll");
+    sgtitle("Aperiodic Roll", "FontSize", 20);
 end
 
 if to_plot(5)
     figure
     for i = 1:4
+        set(gca,'FontSize',15);
         subplot(2, 2, i);
         plot(t_spiral, y_spiral(:, i), 'b-'); hold on;
         plot(Th_sm, intersection_point(Th_sm, t_spiral, y_spiral(:,i)), 'ro'); hold on;
         plot(tau_sm,  intersection_point(tau_sm, t_spiral, y_spiral(:,i)), 'go'); hold off;
+        
+        set(gca,'FontSize',15);
         legend('Response', 'Half-Amplitude Period', 'Time Constant');
         grid on
         title(lat_vars(i));
         xlabel("Time [s]")
         ylabel(lat_vars(i));
     end
-    sgtitle("Spiral");
+    sgtitle("Spiral", "FontSize", 20);
 end
 
 
